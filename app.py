@@ -32,10 +32,13 @@ def load_model():
         print(f"Error loading model: {str(e)}")
 
 @app.route('/')
-def home():
-    """Render the main page."""
-    return render_template('index.html')
-
+def status():
+    """Provide a simple status check."""
+    # This lets you know the API is running without trying to serve a page.
+    return jsonify({
+        'status': 'API is running',
+        'model_loaded': model is not None
+    })
 @app.route('/predict', methods=['POST'])
 def predict():
     """
