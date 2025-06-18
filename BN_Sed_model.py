@@ -227,10 +227,16 @@ print("-" * 50)
 
 # --- 5.1 Save the Model ---
 print("Saving model to 'bn_sed_model.pkl'...")
-import pickle
+import dill  # More robust than pickle for complex objects
+
+# Save only the model structure and parameters
+model_data = {
+    'model': model,
+    'cpds': model.cpds
+}
 
 with open('bn_sed_model.pkl', 'wb') as f:
-    pickle.dump(model, f)
+    dill.dump(model_data, f)
 print("Model saved successfully!")
 print("-" * 50)
 

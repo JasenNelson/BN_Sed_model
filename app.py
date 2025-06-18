@@ -23,13 +23,21 @@ def load_model():
     """Load the pre-trained Bayesian Network model."""
     global model
     try:
+        import dill
+        print("Loading model...")
         with open('/home/jasennelson/mysite/bn_sed_model.pkl', 'rb') as f:
-            model = pickle.load(f)
+            model_data = dill.load(f)
+            model = model_data['model']
+            # Rebuild the model with CPDs
+            for cpd in model_data['cpds']:
+                model.add_cpds(cpd)
         print("Model loaded successfully!")
     except FileNotFoundError:
         print("Error: Model file 'bn_sed_model.pkl' not found.")
     except Exception as e:
         print(f"Error loading model: {str(e)}")
+        import traceback
+        traceback.print_exc()
 
 @app.route('/')
 def status():
