@@ -5,7 +5,7 @@ This Flask application serves a pre-trained Bayesian Network model for sediment 
 It provides a RESTful API endpoint for making predictions.
 """
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pickle
 import numpy as np
