@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayesian Network Sediment Model</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bayesian Network Sediment Model</h1>
+    
+    <div class="form-container">
+        <div class="form-group">
+            <label for="contaminant">Contaminant Level:</label>
+            <select id="contaminant">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="toc">Total Organic Carbon (TOC):</label>
+            <input type="number" id="toc" step="0.1" min="0" max="10" value="1.5">
+        </div>
+        
+        <div class="form-group">
+            <label for="grain_size">Grain Size:</label>
+            <select id="grain_size">
+                <option value="Clay">Clay</option>
+                <option value="Silt">Silt</option>
+                <option value="Sand">Sand</option>
+                <option value="Gravel">Gravel</option>
+            </select>
+        </div>
+        
+        <button id="predict-btn">Predict Ecological Effect</button>
+    </div>
+    
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('predict-btn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'none';
+            
+            // Get input values
+            const inputData = {
+                contaminant: document.getElementById('contaminant').value,
+                toc: parseFloat(document.getElementById('toc').value),
+                grain_size: document.getElementById('grain_size').value
+            };
+            
+            try {
+                const response = await fetch('http://localhost:5000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(inputData)
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Something went wrong');
+                }
+                
+                resultDiv.className = 'success';
+                resultDiv.innerHTML = `
+                    <h3>Prediction Result:</h3>
+                    <p><strong>Ecological Effect:</strong> ${data.prediction}</p>
+                    <p><strong>Confidence:</strong> ${(data.probability * 100).toFixed(2)}%</p>
+                `;
+            } catch (error) {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = `
+                    <h3>Error:</h3>
+                    <p>${error.message}</p>
+                    <p>Make sure the Flask server is running and the API endpoint is correct.</p>
+                `;
+            }
+            
+            resultDiv.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
