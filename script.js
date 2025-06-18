@@ -6,7 +6,7 @@
 // --- Configuration ---
 // IMPORTANT: You will replace this with your deployed API URL later!
 // const API_URL = 'http://127.0.0.1:5000/predict'; // For local testing
-const API_URL = 'https://YourUsername.pythonanywhere.com/predict';
+const API_URL = 'https://jasennelson.pythonanywhere.com/predict';
 
 // --- Event Listener ---
 document.getElementById('prediction-form').addEventListener('submit', function(event) {
