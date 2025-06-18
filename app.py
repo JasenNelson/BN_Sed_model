@@ -23,7 +23,7 @@ def load_model():
     """Load the pre-trained Bayesian Network model."""
     global model
     try:
-        with open('bn_sed_model.pkl', 'rb') as f:
+        with open('/home/jasennelson/mysite/bn_sed_model.pkl', 'rb') as f:
             model = pickle.load(f)
         print("Model loaded successfully!")
     except FileNotFoundError:
