@@ -225,6 +225,14 @@ if not is_valid:
     raise ValueError("Model is not valid. Check structure and CPDs.")
 print("-" * 50)
 
+# --- 5.1 Save the Model ---
+print("Saving model to 'bn_sed_model.pkl'...")
+import pickle
+
+with open('bn_sed_model.pkl', 'wb') as f:
+    pickle.dump(model, f)
+print("Model saved successfully!")
+print("-" * 50)
 
 # --- 6. Perform Probabilistic Inference ---
 # Initialize the inference engine. VariableElimination is a common exact

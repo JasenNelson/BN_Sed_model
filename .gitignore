@@ -44,6 +44,15 @@ Thumbs.db
 .env
 *.log
 
+# Model files
+*.pkl
+*.h5
+*.hdf5
+*.model
+*.pth
+*.pt
+*.bin
+
 # OS generated files
 .DS_Store
 .DS_Store?
